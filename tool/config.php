@@ -5,7 +5,9 @@ $config = Array(
     "pass"=>"",
     "db"=>"music",
 
-    'logFile'=>"log.txt"
+    'logFile'=>"log.txt",
+
+    'MusicNameLengthMax' => 200,
 );
 
 global $config;
