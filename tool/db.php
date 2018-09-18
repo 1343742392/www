@@ -8,6 +8,7 @@ function query($conn, $sql)
         echo "no " . mysql_error();
         die;
     }
+    return true;
 }
 
 function hasValue($table, $column, $value)
@@ -19,31 +20,16 @@ function hasValue($table, $column, $value)
     }
     query($conn, 'set names utf8');
     $result = mysqli_query($conn, "SELECT ".$column." FROM ".$table);
+
     if (mysqli_num_rows($result) > 0)
     {
         while($row = mysqli_fetch_assoc($result))
         {
-            if($value == $row["id"])
+            if($value == $row[$column])
             {
                 return true;
             }
         }
-        return false;
-    }
-    $result = mysqli_query($conn, "SELECT ".$column." FROM ".$table);
-    if (mysqli_num_rows($result) > 0)
-    {
-        while($row = mysqli_fetch_assoc($result))
-        {
-            if($value == $row["id"])
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    else
-    {
         return false;
     }
 }
@@ -52,10 +38,10 @@ function hasValue($table, $column, $value)
 1  2
 3 4
 
-getValue($table, mame, id, 4) 得到id=4的name
+getValue($table, id, 4 , mame) 得到id=4的name
 return 3
 */
-function getValue($table, $column, $obj_column, $value)
+function getValue($table,  $obj_column, $value, $column)
 {
     global $config;
     $conn = mysqli_connect($config['host'], $config['user'], $config['pass'], $config['db']);
@@ -71,13 +57,32 @@ function getValue($table, $column, $obj_column, $value)
     }
     while($row = mysqli_fetch_assoc($result)) 
     {
-        var_dump($row);
         if($row[$obj_column] == $value)
         {
             return $row[ $column];
         }
     }
     return false;
+}
+/*setValue($table, $obj_column, $value, $column, $setValue)
+设置table表obj_colum列等于value行 的column列的值
+
+setValue(table, 1, a, 2, b)
+1    2        1     2
+c    c   ->   c     c
+a    a        a     b
+*/
+function setValue($table, $obj_column, $value, $column, $setValue)
+{
+    global $config;
+    $conn = mysqli_connect($config['host'], $config['user'], $config['pass'], $config['db']);
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    query($conn, 'set names utf8');
+
+    $sql = "UPDATE `user` SET `".$column."`='".$setValue."' WHERE ".$obj_column." = ".$value;
+    return query($conn, $sql);
 }
 
 /*
@@ -127,7 +132,8 @@ function insetValue($table, $values)
     $id = $id.',`'.$values[$f][0].'`';
     $value = $value.",'".$values[$f][1]."'";
   }
-  return query($conn, 'INSERT INTO `'.$table.'` ('.$id.') VALUES ('.$value.');');
+  $sql = 'INSERT INTO `'.$table.'` ('.$id.') VALUES ('.$value.');';
+  return query($conn, $sql);
 }
 
 //删除一行 指定值的那一行
