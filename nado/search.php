@@ -1,19 +1,27 @@
 <?php
 include("./tool/db.php");
 $search = $_GET['name'];
+$search = preg_replace('/\n|\r|\s|\t*/', '', $search);
 global $search;
-if(!$search)die;
-$reslut = '';
+if(!$search)die('err null name');
+$reslut = array();
 global $reslut;
 $callback = function($value)
 {
     global $search;
     global $reslut;
-    if(preg_match('/.*'.$search.'.*/', $value))
+    $name = $value['name'];
+    $subfix = $value['subfix'];
+    if(preg_match('/.*'.$search.'.*/', $name))
     {
-        $time = getValue('music',  'name', $value,'time');
-        $reslut = $reslut.$value.','.$time.',';
+        $time = $value['time'];
+        $id = $value['id'];
+        $public = $value['public'];
+        $arr = array('name'=> $name, 'subfix' => $subfix, 'public' => $public, 'time' => $time, 'id' => $id);
+        array_push($reslut, $arr);
     }
 };
-getColumn("music", 'name', $callback);
-echo $reslut;
+
+getTable("music", $callback);
+echo json_encode($reslut);
+

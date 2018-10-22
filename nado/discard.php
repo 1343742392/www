@@ -9,11 +9,11 @@ if($userId == null || $musicId == null)
     die;
 }
 
-if(collection($userId, $musicId))
+if(discard($userId, $musicId))
 {
-    echo '收藏成功';
+    echo'删除成功';
 }
 else
 {
-    echo '收藏失败';
+    echo'删除失败';
 }

@@ -13,9 +13,23 @@
     </br>
 
     上传
-    <FORM method="post" enctype="multipart/form-data"  action="upload.php">
-        <input type="file" name="file" />
-        <INPUT type="submit" class="btn" value=" 提交 ">
+    <FORM id='upload' method="post" enctype="multipart/form-data"  action="upload.php">
+    歌曲文件<input type="file" name="file" />
+    <br>
+    <br>
+        发布年(例如:1996):<input type="number" size="4" name="publicTimeY" maxlength="4"/>
+        月(例如:12):<input type="number" size="2" name="publicTimeM" maxlength="2"/>
+        日(例如:9):<input type="number" size="2" name="publicTimeD" maxlength="2"/>
+    <br>
+    <br>
+        发布人名字:<input type="text" name="public" maxlength="6"/>
+    <br>
+    <br>
+        歌词:<textarea rows="4" cols="50" name="lyric" form="upload" maxlength="1500">
+            </textarea>
+    <br>
+    <br>
+        <INPUT type="submit" class="btn" value=" 提交 "/>
     </FORM>
 
     </br>
@@ -29,9 +43,38 @@
     </br>
     收藏
     <FORM method="post" enctype="multipart/form-data"  action="collection.php">
-        <p> musicName: <input type="text" name="musicName" /></p>
+        <p> musicId: <input type="text" name="musicId" /></p>
         <p> id: <input type="text" name="user" /></p>
         <INPUT type="submit" class="btn" value=" 提交 ">
     </FORM>
+    </br>
+    删除收藏
+    <FORM method="post" enctype="multipart/form-data"  action="discard.php">
+        <p> musicId: <input type="text" name="musicId" /></p>
+        <p> id: <input type="text" name="user" /></p>
+        <INPUT type="submit" class="btn" value=" 提交 ">
+    </FORM>
+</br>   
+ 获取收藏列表	
+    <FORM method="get" enctype="multipart/form-data"  action="getCollects.php">
+        <p> id<input type="text" name="id" /></p>
+        <INPUT type="submit" class="btn" value=" 提交 ">
+    </FORM>
+</br>   
+	get music info
+   <FORM method="get" enctype="multipart/form-data"  action="getMusicInfo.php">
+       <p> musicid<input type="text" name="id" /></p>
+       <INPUT type="submit" class="btn" value=" 提交 ">
+   </FORM>
+
+</br>   
+增加播放量
+<FORM method="post" enctype="multipart/form-data"  action="playEnd.php">
+   <p> musicid<input type="text" name="id" /></p>
+   <INPUT type="submit" class="btn" value=" 提交 ">
+</FORM>
+
+</br>
+<a href="rank.php">排行</a>
 </body>
-</html>
+
