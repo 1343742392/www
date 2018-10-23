@@ -13,7 +13,8 @@ $back = function($value)
     $updateTime = $value['updateTime'];
     $musicStr = $value['musicList'];
     global $musicList;
-    $musicList = array_values(array_filter(explode(':', $musicStr)));
+    $musicList = array_values(explode(':', $musicStr));
+    array_splice($musicList, 0, 1);
 };
 getTable('rank', $back);
 
@@ -39,6 +40,7 @@ if(time() - $updateTime > $config['rankUpdateTime'] * 3600)
             $keys = array_keys($musicList);
             $reslut = array();
             $reslutStr = '';
+
             for($f = 0; $f <  $config['rankLength']; $f ++)
             {
                 $id = getValue('music', 'id', $keys[$f], 'id');
@@ -63,6 +65,9 @@ if(time() - $updateTime > $config['rankUpdateTime'] * 3600)
                     array('updateTime', time()), 
                     array('musicList', $reslutStr))
             );
+            //var_dump($reslut);
+            //echo'<br>';
+            //echo $reslutStr;
             echo json_encode($reslut);
         }
     };
@@ -73,6 +78,8 @@ else
 {
     //直接返回
     $reslut = array();
+    //var_dump($musicList);
+    
     for($f = 0; $f < count($musicList); $f = $f + 5)
     {
         $id = $musicList[$f];
@@ -88,5 +95,6 @@ else
             'playNum' => $playNum,
         ));
     }
+    
     echo json_encode($reslut);
 }

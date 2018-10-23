@@ -14,7 +14,9 @@ $config = Array(
 	
 	'rankLength' => 20,
 
-	'rankUpdateTime' => 24,
+	'rankUpdateTime' => 8,
+
+	'searchReslutLenth' => 40,
 );
 
 global $config;
